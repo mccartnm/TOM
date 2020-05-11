@@ -15,6 +15,10 @@ public:
 	// Sets default values for this pawn's properties
 	AShipBase();
 
+	// -- Class Size
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=BuildTools)
+	int32 ShipClassSize;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

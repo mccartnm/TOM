@@ -9,9 +9,7 @@ UHardpointBase::UHardpointBase()
 	MountActorChildComponent = CreateDefaultSubobject<UChildActorComponent>(TEXT("Mount"));
 	MountActorChildComponent->SetupAttachment(this);
 
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false; // For the time being
 }
 
 
@@ -27,6 +25,19 @@ void UHardpointBase::MountChanged_Implementation()
 		ClearMount();
 		SetBlankMount();
 	}
+}
+
+
+bool UHardpointBase::CanMountClass(TSubclassOf<AMountableBase> Mount) const
+{
+	AMountableBase* Instance = Mount.GetDefaultObject();
+
+	int32 MountType = static_cast<int32>(Instance->GetMountType());
+	if (MountType & (SupportedMountTypes / 2)) // FIXME BP Bitmask is doubling?
+	{
+		return true;
+	}
+	return false;
 }
 
 
@@ -54,27 +65,17 @@ AMountableBase* UHardpointBase::GetMount() const
 }
 
 
-bool UHardpointBase::SetMount(TSubclassOf<AMountableBase> mount)
+bool UHardpointBase::SetMount(TSubclassOf<AMountableBase> Mount)
 {
 	ClearMount();
-	if (!mount)
+	if (!Mount || !CanMountClass(Mount))
 	{
 		SetBlankMount();
 		return false;
 	}
-
-	// Verify this mount and handle the mount type
-	int32 mountType = static_cast<int32>(mount.GetDefaultObject()->GetMountType());
-	if (mountType & (SupportedMountTypes / 2)) // FIXME BP Bitmask is doubling?
-	{
-		MountActorChildComponent->SetChildActorClass(mount);
-		MountActorChildComponent->CreateChildActor();
-		return true;
-	}
-
-	// Cannot set that mount type. Should be caught earlier
-	SetBlankMount();
-	return false;
+	MountActorChildComponent->SetChildActorClass(Mount);
+	MountActorChildComponent->CreateChildActor();
+	return true;
 }
 
 
@@ -84,22 +85,15 @@ void UHardpointBase::ClearMount()
 }
 
 
-// Called when the game starts
 void UHardpointBase::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
-	
 }
 
 
-// Called every frame
 void UHardpointBase::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
 }
 
 

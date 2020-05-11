@@ -14,6 +14,8 @@ Examples of mountable parts:
 
 This is all done with the proprietary Hardpoint system. A hard point is just a location on/in the hull that can host a mount. As the artist/designer builds the hull/interior of the ship, they can decide where to lay hardpoints and the mountable types they can hold onto, among other things. The hull system for the ship will do the rest when it comes to exposing available mounting slots to the player.
 
+> Note: Really this is just an abstract attachment system for faster design iterations. There are other systems out there that do a similar thing but none with the level of responsiveness desired for this project
+
 ## Editor Updates
 
 One of the main goals is to make the modularity be available while laying down the hardpoints. Having the ability to cycle through the mountables on a given hardpoint while editing the blueprint is key.

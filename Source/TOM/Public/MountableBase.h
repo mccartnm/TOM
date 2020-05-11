@@ -20,6 +20,10 @@ enum class EMountType : uint8
 };
 
 
+/*
+ * A mountable item. Abstract as it should have overloads for each of the
+ * EMountType declarations.
+ */
 UCLASS()
 class TOM_API AMountableBase : public AActor
 {
@@ -29,8 +33,30 @@ public:
 	// Sets default values for this actor's properties
 	AMountableBase();
 
+	// Get the mount type. This is partiuclar to the more-concrete type
 	UFUNCTION(BlueprintCallable, Category=Mount)
 	EMountType GetMountType() const;
+
+	 // -- Settings all mountable objects have -- //
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Properties)
+	FString MountName;
+
+	// Mass - The mass this mount adds to a vessel
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Properties)
+	float Mass;
+
+	// Power - The power consumption (or addition if negative) this item produces
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Properties)
+	float Power;
+
+	// Health - The amount of damage this unit can sustain before being unusable
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Properties)
+	float Health;
+
+	// Class Size - The class size, larger is for bigger ships
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Basics)
+	int32 ClassSize;
 
 protected:
 	// Called when the game starts or when spawned

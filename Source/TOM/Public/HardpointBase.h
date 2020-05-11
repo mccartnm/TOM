@@ -30,10 +30,13 @@ public:
 	TSubclassOf<AMountableBase> MountedClass;
 
 	UFUNCTION(BlueprintCallable, Category=Mount)
+	bool CanMountClass(TSubclassOf<AMountableBase> Mount) const;
+
+	UFUNCTION(BlueprintCallable, Category=Mount)
 	AMountableBase *GetMount() const;
 
 	UFUNCTION(BlueprintCallable, Category=Mount)
-	bool SetMount(TSubclassOf<AMountableBase> mount);
+	bool SetMount(TSubclassOf<AMountableBase> Mount);
 
 	UFUNCTION(BlueprintCallable, Category=Mount)
 	void ClearMount();
